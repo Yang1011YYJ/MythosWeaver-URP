@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_MythRipple_Gold
-  m_Shader: {fileID: -6465566751694194690, guid: 6de96361695757642a29a979d3503960, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c01b8021369d1c74a9a4bf5e4d995881, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -73,10 +73,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Amplitude: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Damping: 2
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Frequency: 48.1
+    - _FrontWidth: 0.15
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -87,12 +91,12 @@ Material:
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RippleActive: 1
+    - _RippleActive: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Speed: 1
     - _SrcBlend: 1
-    - _StartTime: 1.5151819
+    - _StartTime: 1.2386228
     - _Strength: 1
     - _UVSec: 0
     - _WaveFrequency: 20
@@ -100,11 +104,11 @@ Material:
     - _Width: 0.1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0, b: 0.34117648, a: 0}
-    - _Center: {r: 0.20556226, g: 0.46044603, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 0.29803923, a: 0}
+    - _Center: {r: 0.46136945, g: 0.5898328, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 1, g: 0.8980392, b: 0.2980392, a: 1}
+    - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &486725604886072018
 MonoBehaviour:
