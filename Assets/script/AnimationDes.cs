@@ -32,7 +32,7 @@ public class AnimationDes : MonoBehaviour
     IEnumerator FadeRoutine(float start, float end, float duration, CanvasGroup canvasGroup)
     {
         float t = 0;
-        canvasGroup.alpha = 0f;
+        canvasGroup.alpha = start;
         while (t < duration)
         {
             t += Time.deltaTime;
@@ -41,6 +41,6 @@ public class AnimationDes : MonoBehaviour
             canvasGroup.alpha = alpha;
             yield return null;
         }
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = end;
     }
 }

@@ -19,4 +19,8 @@ public class Scene : MonoBehaviour
     {
         SceneManager.LoadScene("description");
     }
+    public void MenuTodes()
+    {
+        SceneManager.LoadScene("description");
+    }
 }
