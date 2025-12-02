@@ -1,0 +1,13 @@
+V1
+2:DialogueSystem,G
+2:_typing,R
+2:_continueButton,o
+2:_dialoguePanel,A
+2:_characterImage,V
+2:_dialogues,a
+2:_dialogueText,v
+2:_nameText,oM
+2:_wordSpeedTypes,q
+2:_wordSpeed,l
+2:Start,VK
+2:Update,g
