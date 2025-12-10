@@ -1,10 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public enum MythEventType
 {
     None = 0,
@@ -13,48 +14,47 @@ public enum MythEventType
     Trickery = 3,
     Cataclysm = 4
 }
+
 public enum LeverState
 {
-    Locked,          // ¤£¯à©Ô
-    WaitingForPull,  // ¥i¥H©Ô¡]¥u¦Y²Ä¤@¦¸¡^
-    ChoiceResolved   // ³o¤@½ü©Ô±ì¤w¸g³B²z§¹
+    Locked,          // ä¸èƒ½æ‹‰
+    WaitingForPull,  // å¯ä»¥æ‹‰ï¼ˆåªåƒç¬¬ä¸€æ¬¡ï¼‰
+    ChoiceResolved   // é€™ä¸€è¼ªæ‹‰æ¡¿å·²ç¶“è™•ç†å®Œ
 }
 
 public class ChooseEventss : MonoBehaviour
 {
-    [Header("¨Æ¥ó¬ÛÃö³]©w")]
+    [Header("äº‹ä»¶ç›¸é—œè¨­å®š")]
     public MythEventType currentEvent;
     public TextMeshProUGUI eventNameText;
-    [Tooltip("¶}©l»¡©ú¨Æ¥ó")]public bool descriptionStarted = false; // ·s¼W¤@­ÓÄæ¦ì
-    
-    [Header("UI ¤¸¥ó")]
-    public CanvasGroup EventShow;   // Åã¥Üµ²ªGªº­±ªO¡]­n±¾ CanvasGroup¡^
-    public TextMeshProUGUI resultText;           // ­±ªO¤WÅã¥Üµ²ªGªº¤å¦r
+    [Tooltip("é–‹å§‹èªªæ˜äº‹ä»¶")] public bool descriptionStarted = false;
 
-    [Header("Flow ª¬ºA")]
+    [Header("UI å…ƒä»¶")]
+    public CanvasGroup EventShow;      // é¡¯ç¤ºçµæœçš„é¢æ¿ï¼ˆè¦æ› CanvasGroupï¼‰
+    public TextMeshProUGUI resultText; // é¢æ¿ä¸Šé¡¯ç¤ºçµæœçš„æ–‡å­—
+
+    [Header("Flow ç‹€æ…‹")]
     public LeverState leverState = LeverState.Locked;
-    [Tooltip("¨¾¤î©Ô¤@¦¸±ì¦b¦P¤@¬q®É¶¡¤º­«½ÆÄ²µo")]
+    [Tooltip("é˜²æ­¢æ‹‰ä¸€æ¬¡æ¡¿åœ¨åŒä¸€æ®µæ™‚é–“å…§é‡è¤‡è§¸ç™¼")]
     public bool hasShownCardThisPull = false;
 
-    [Header("¥d¤ù")]
+    [Header("å¡ç‰‡")]
     public GameObject Card;
     public Animator CardAnimator;
     public Image CardCurrent;
-    [Tooltip("¨aÅÜ")]public Sprite cataclysm;
-    [Tooltip("³Ğ¥@")] public Sprite creation;
-    [Tooltip("­^¶¯¤§®È")] public Sprite herosQuest;
-    [Tooltip("¸Ş­p / ¬¾¶B")] public Sprite trickery;
+    [Tooltip("ç½è®Š")] public Sprite cataclysm;
+    [Tooltip("å‰µä¸–")] public Sprite creation;
+    [Tooltip("è‹±é›„ä¹‹æ—…")] public Sprite herosQuest;
+    [Tooltip("è©­è¨ˆ / ç‹¡è©")] public Sprite trickery;
 
-    [Header("¸}¥»")]
+    [Header("è…³æœ¬")]
     public AnimationDes animationDes;
     public DesCC desCCScript;
     public DialogueSystemDes dialogueSystemDesScript;
 
-
-
-    [Header("²H¤J»P¤Á´«³]©w")]
-    public float fadeDuration = 0.8f;     // ²H¤J®É¶¡
-    public float waitBeforeLoad = 1.0f;   // ­±ªO§¹¥ş¥X²{«á°±¯d¦h¤[¦A¤Á³õ´º
+    [Header("æ·¡å…¥èˆ‡åˆ‡æ›è¨­å®š")]
+    public float fadeDuration = 0.8f;     // æ·¡å…¥æ™‚é–“
+    public float waitBeforeLoad = 1.0f;   // é¢æ¿å®Œå…¨å‡ºç¾å¾Œåœç•™å¤šä¹…å†åˆ‡å ´æ™¯
 
     private void Awake()
     {
@@ -66,28 +66,32 @@ public class ChooseEventss : MonoBehaviour
 
         if (dialogueSystemDesScript == null)
             dialogueSystemDesScript = FindObjectOfType<DialogueSystemDes>();
-
     }
 
-    void Start()
+    private void Start()
     {
-        CardAnimator = Card.GetComponent<Animator>();
-        CardCurrent = Card.GetComponent<Image>();
-        // ªì©l¤Æ­±ªO¬°ÁôÂÃ
+        if (Card != null)
+        {
+            CardAnimator = Card.GetComponent<Animator>();
+            CardCurrent = Card.GetComponent<Image>();
+        }
+
+        // åˆå§‹åŒ–é¢æ¿ç‚ºéš±è—
         if (EventShow != null)
         {
             EventShow.alpha = 0;
             EventShow.gameObject.SetActive(false);
         }
     }
-    // ====== µ¹¹ï¸Ü¨t²Î©I¥s¡G³o¤@½ü¥i¥H©Ô±ì¤F ======
+
+    // ====== çµ¦å°è©±ç³»çµ±å‘¼å«ï¼šé€™ä¸€è¼ªå¯ä»¥æ‹‰æ¡¿äº† ======
     public void EnableLever()
     {
         leverState = LeverState.WaitingForPull;
         hasShownCardThisPull = false;
         descriptionStarted = false;
 
-        // Optional¡G¸ò DesCC ¦P¨B¤@¤U
+        // Optionalï¼šè·Ÿ DesCC åŒæ­¥ä¸€ä¸‹
         if (desCCScript != null)
         {
             desCCScript.CanPullEvent = true;
@@ -95,90 +99,103 @@ public class ChooseEventss : MonoBehaviour
         }
     }
 
-    // ====== «ö¶sª©¡GUI «ö¶s onClick ª½±µ±µ³o­Ó ======
-    public void OnLeverPulledByButton()
+    // =============================
+    // ğŸŒŸ çµ±ä¸€å…¥å£ï¼šä¸ç®¡ä¾†æºæ˜¯ UI æˆ– Arduino
+    // =============================
+    public void HandleLeverChoice(int choiceId)
     {
-        if (desCCScript == null)
-        {
-            Debug.LogWarning("¯Ê¤Ö DesCC °Ñ¦Ò");
-            return;
-        }
-
-        // Åª¨ú²{¦b¿é¤JÄæªº¼Æ¦r
-        int id;
-        string text = desCCScript.inputField.text;
-
-        if (!int.TryParse(text, out id))
-        {
-            Debug.LogWarning("¿é¤J¤£¬O¦³®Ä¼Æ¦r");
-            return;
-        }
-
-        OnLeverPulled(id);
-    }
-
-    // ====== Arduino ª©¡G¤§«á¥u­n¦b±µ¦¬µ{¦¡¸Ì©I¥s³o­Ó ======
-    public void OnLeverPulledFromArduino(int valueFromHardware)
-    {
-        OnLeverPulled(valueFromHardware);
-    }
-
-    // ====== ©Ô±ì¯u¥¿ªº¤J¤f¡GµL½×¬O«ö¶sÁÙ¬O Arduino ³£¨«³o¸Ì ======
-    void OnLeverPulled(int choiceId)
-    {
-        // ¥u¦³¦b¡uµ¥«İ©Ô±ì¡vª¬ºA¡A²Ä¤@¦¸©Ô¤~·|³Q³B²z
+        // åªæœ‰åœ¨ã€Œç­‰å¾…æ‹‰æ¡¿ã€ç‹€æ…‹ï¼Œç¬¬ä¸€æ¬¡æ‹‰æ‰æœƒè¢«è™•ç†
         if (leverState != LeverState.WaitingForPull)
         {
-            Debug.Log("²{¦b¤£±µ¨ü©Ô±ì¡Aª¬ºA¡G" + leverState);
+            Debug.Log("ç¾åœ¨ä¸æ¥å—æ‹‰æ¡¿ï¼Œç‹€æ…‹ï¼š" + leverState);
             return;
         }
 
         if (choiceId < 1 || choiceId > 4)
         {
-            Debug.LogWarning("©Ô±ì¼Æ­È¤£¦b 1~4 ½d³ò¤º¡G" + choiceId);
+            Debug.LogWarning("æ‹‰æ¡¿æ•¸å€¼ä¸åœ¨ 1~4 ç¯„åœå…§ï¼š" + choiceId);
             return;
         }
 
-        // Á×§K«áÄò¦A¦Y¨ì¦h¦¸©Ô±ì
+        // é¿å…å¾ŒçºŒå†åƒåˆ°å¤šæ¬¡æ‹‰æ¡¿
         leverState = LeverState.ChoiceResolved;
         hasShownCardThisPull = true;
 
-        // ¸ò DesCC ¦P¨B¤@¤Uª¬ºA¡]¥i¦³¥iµL¡A¬İ§A«á­±­n¤£­n¥Î¡^
+        // è·Ÿ DesCC åŒæ­¥ä¸€ä¸‹ç‹€æ…‹ï¼ˆå¯æœ‰å¯ç„¡ï¼Œçœ‹ä½ å¾Œé¢è¦ä¸è¦ç”¨ï¼‰
         if (desCCScript != null)
         {
             desCCScript.CanPullEvent = false;
             desCCScript.PullEvent = 5;
         }
 
-        // ®M¨Æ¥ó & ¼½°Êµe
+        // å¥—äº‹ä»¶ & æ’­å‹•ç•«
         SetEvent(choiceId);
         ShowCardAnimation();
     }
 
+    // =============================
+    // âœ… ç›®å‰è»Ÿé«”æ¸¬è©¦ç”¨ï¼šUI æŒ‰éˆ•ç‰ˆ
+    // =============================
+    // ç‰ˆæœ¬ 1ï¼šç¶­æŒä½ åŸæœ¬ã€Œè¼¸å…¥æ•¸å­—ï¼‹æŒ‰æŒ‰éˆ•ã€
+    public void OnLeverPulledByButton()
+    {
+        if (desCCScript == null || desCCScript.inputField == null)
+        {
+            Debug.LogWarning("ç¼ºå°‘ DesCC æˆ– inputField åƒè€ƒ");
+            return;
+        }
+
+        int id;
+        string text = desCCScript.inputField.text;
+
+        if (!int.TryParse(text, out id))
+        {
+            Debug.LogWarning("è¼¸å…¥ä¸æ˜¯æœ‰æ•ˆæ•¸å­—ï¼š" + text);
+            return;
+        }
+
+        HandleLeverChoice(id);
+    }
+
+    // =============================
+    // ğŸ”Œ æœªä¾†ç¡¬é«”ç”¨ï¼šArduino ç‰ˆ
+    // =============================
+    public void OnLeverPulledFromArduino(int valueFromHardware)
+    {
+        HandleLeverChoice(valueFromHardware);
+    }
+
+    // =============================
+    // ä¸‹æ–¹æ˜¯äº‹ä»¶é‚è¼¯ & æ’­å‹•ç•«
+    // =============================
     public void SetEvent(int eventID)
     {
         currentEvent = (MythEventType)eventID;
         CardNimber();
+        Debug.Log("ç•¶å‰äº‹ä»¶ï¼š" + currentEvent);
     }
 
-    void CardNimber()
+    private void CardNimber()
     {
+        if (CardCurrent == null || eventNameText == null)
+            return;
+
         switch (currentEvent)
         {
             case MythEventType.Creation:
-                eventNameText.text = "³Ğ¥@";
+                eventNameText.text = "å‰µä¸–";
                 CardCurrent.sprite = creation;
                 break;
             case MythEventType.HeroQuest:
-                eventNameText.text = "­^¶¯¤§®È";
+                eventNameText.text = "è‹±é›„ä¹‹æ—…";
                 CardCurrent.sprite = herosQuest;
                 break;
             case MythEventType.Trickery:
-                eventNameText.text = "¸Ş­p / ¬¾¶B";
+                eventNameText.text = "è©­è¨ˆ / ç‹¡è©";
                 CardCurrent.sprite = trickery;
                 break;
             case MythEventType.Cataclysm:
-                eventNameText.text = "¨aÅÜ";
+                eventNameText.text = "ç½è®Š";
                 CardCurrent.sprite = cataclysm;
                 break;
             default:
@@ -188,8 +205,10 @@ public class ChooseEventss : MonoBehaviour
         }
     }
 
-    void ShowCardAnimation()
+    private void ShowCardAnimation()
     {
+        if (Card == null) return;
+
         if (!Card.activeSelf)
             Card.SetActive(true);
 
@@ -199,74 +218,30 @@ public class ChooseEventss : MonoBehaviour
         }
     }
 
-    // ³o¬q¤§«á¥i¥H¦b°Êµe Event ©Î§Oªº¦a¤è©I¥s¡G
-    // ·í¥d¤ù¦¬¦^ ¡÷ ¶}©l´y­z¥d¤ù¥Îªº¹ï¸Ü
+    // å¡ç‰‡æ”¶å› â†’ é–‹å§‹æè¿°å¡ç‰‡ç”¨çš„å°è©±
     public void StartDescriptionDialogueIfNeeded()
     {
         if (!hasShownCardThisPull || descriptionStarted)
             return;
 
         descriptionStarted = true;
-        desCCScript.pulleventbutton.gameObject.SetActive(false);
-        desCCScript.inputField.gameObject.SetActive(false);
-        dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
-        dialogueSystemDesScript.KeepTalk = true;
+
+        if (desCCScript != null)//é—œæ‰æŒ‰éˆ•å’Œè¼¸å…¥äº‹ä»¶ç·¨è™Ÿçš„UI
+            //ä¹‹å¾Œæ¥arduinoå¯ä»¥æ‹¿æ‰
+        {
+            if (desCCScript.pulleventbutton != null)
+                desCCScript.pulleventbutton.gameObject.SetActive(false);
+
+            if (desCCScript.inputField != null)
+                desCCScript.inputField.gameObject.SetActive(false);
+        }
+
+        if (dialogueSystemDesScript != null)
+        {
+            dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
+            dialogueSystemDesScript.KeepTalk = true;
+        }
     }
-    ////ÀH¾÷©â¨Æ¥ó
-    //public void EventOne()
-    //{
-    //    var events = EventDatabase.Instance.events;
-    //    if (events == null || events.Count == 0)
-    //    {
-    //        Debug.Log("List¬OªÅªº!");
-    //        return;
-    //    }
 
-    //    int index = Random.Range(0, events.Count);//©â¤@­Ó
-    //    var picked = events[index];
-
-    //    //²¾°£­è­è©â¨ìªº
-    //    events.RemoveAt(index);
-
-    //    Debug.Log("©â¨ì:"+picked.displayName);
-
-    //    // Åã¥Üµ²ªG­±ªO¨ÃÅª¨ú¹ïÀ³³õ´º
-    //    StartCoroutine(ShowResultAndLoadScene(picked));
-    //}
-
-    //IEnumerator ShowResultAndLoadScene(EventDatabase.EventConfig picked)
-    //{
-    //    // Åã¥Üµ²ªG­±ªO
-    //    EventShow.gameObject.SetActive(true);
-    //    EventShow.alpha = 0;
-
-    //    if (resultText != null)
-    //    {
-    //        resultText.text = "©â¨ì¡G" + picked.displayName;
-    //    }
-
-    //    // ²H¤J°Êµe
-    //    float t = 0f;
-    //    while (t < fadeDuration)
-    //    {
-    //        t += Time.deltaTime;
-    //        float a = Mathf.Lerp(0f, 1f, t / fadeDuration);
-    //        EventShow.alpha = a;
-    //        yield return null;
-    //    }
-    //    EventShow.alpha = 1f;
-
-    //    // °±¯d¤@¬q®É¶¡Åıª±®a¬İµ²ªG
-    //    yield return new WaitForSeconds(waitBeforeLoad);
-
-    //    // ¤Á´«¨ì¹ïÀ³³õ´º
-    //    if (!string.IsNullOrEmpty(picked.sceneName))
-    //    {
-    //        SceneManager.LoadScene(picked.sceneName);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("³o­Ó¨Æ¥ó¨S¦³³]©w sceneName¡C");
-    //    }
-    //}
+    // ======= ä¸‹é¢é€™æ®µä½ åŸæœ¬ç”¨äº‹ä»¶è³‡æ–™åº«ï¼‹åˆ‡å ´æ™¯çš„é‚è¼¯å…ˆè¨»è§£è‘—ï¼Œå°±ä¸è²¼äº† =======
 }
