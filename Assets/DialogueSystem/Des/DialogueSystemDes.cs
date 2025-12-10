@@ -137,6 +137,7 @@ public class DialogueSystemDes : MonoBehaviour
         if (KeepTalk)
         {
             KeepTalk = false;
+            index = 0;
             GetTextFromFile(TextfileCurrent);
             StartDialogue();
         }

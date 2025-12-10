@@ -21,6 +21,6 @@ public class animatorEvents : MonoBehaviour
     public void hideObject()
     {
         //gameObject.SetActive(false);
-      chooseEventssScript.StartDescriptionDialogueIfNeeded();
+      StartCoroutine(chooseEventssScript.StartDescriptionDialogueIfNeeded());
     }
 }

@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 53df6e7197d9f7a449d165969865df1d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -62,7 +62,7 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _DissolveAmount: 0
+    - _DissolveAmount: 1
     - _EnableExternalAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0

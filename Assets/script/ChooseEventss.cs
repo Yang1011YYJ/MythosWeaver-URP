@@ -41,7 +41,7 @@ public class ChooseEventss : MonoBehaviour
     [Header("卡片")]
     public GameObject Card;
     public Animator CardAnimator;
-    public Image CardCurrent;
+    public SpriteRenderer CardCurrent;
     [Tooltip("災變")] public Sprite cataclysm;
     [Tooltip("創世")] public Sprite creation;
     [Tooltip("英雄之旅")] public Sprite herosQuest;
@@ -51,6 +51,7 @@ public class ChooseEventss : MonoBehaviour
     public AnimationDes animationDes;
     public DesCC desCCScript;
     public DialogueSystemDes dialogueSystemDesScript;
+    public DissolveEffect dissolveEffectScript;
 
     [Header("淡入與切換設定")]
     public float fadeDuration = 0.8f;     // 淡入時間
@@ -66,6 +67,7 @@ public class ChooseEventss : MonoBehaviour
 
         if (dialogueSystemDesScript == null)
             dialogueSystemDesScript = FindObjectOfType<DialogueSystemDes>();
+        dissolveEffectScript = FindObjectOfType<DissolveEffect>();
     }
 
     private void Start()
@@ -73,7 +75,7 @@ public class ChooseEventss : MonoBehaviour
         if (Card != null)
         {
             CardAnimator = Card.GetComponent<Animator>();
-            CardCurrent = Card.GetComponent<Image>();
+            CardCurrent = Card.GetComponent<SpriteRenderer>();
         }
 
         // 初始化面板為隱藏
@@ -224,28 +226,35 @@ public class ChooseEventss : MonoBehaviour
 
         if (CardAnimator != null)
         {
+            dissolveEffectScript.dissolveAmount = 1f;
+            dissolveEffectScript.material.SetFloat("_DissolveAmount", dissolveEffectScript.dissolveAmount);
             CardAnimator.SetBool("CardShow", true);
         }
     }
 
     // 卡片收回 → 開始描述卡片用的對話
-    public void StartDescriptionDialogueIfNeeded()
+    public IEnumerator StartDescriptionDialogueIfNeeded()
     {
         if (!hasShownCardThisPull || descriptionStarted)
-            return;
+            yield return null;
 
+        // 1. 等玩家按空白鍵
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
+        dissolveEffectScript.StartDissolve(true);
+
+        yield return new WaitUntil(() => dissolveEffectScript.dissolveAmount == 0);
+
+        yield return new WaitForSeconds(1f);
         descriptionStarted = true;
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (dialogueSystemDesScript != null)
         {
-            Card.SetActive(false);
-            if (dialogueSystemDesScript != null)
-            {
-                dialogueSystemDesScript.TextPanel.SetActive(true);
-                dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
-                dialogueSystemDesScript.KeepTalk = true;
-            }
+            
+            dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
+            dialogueSystemDesScript.TextPanel.SetActive(true);
+            dialogueSystemDesScript.KeepTalk = true;
+            dialogueSystemDesScript.autoNextLine = true;
+            dialogueSystemDesScript.keepHistoryInPrologue = true;
         }
 
         

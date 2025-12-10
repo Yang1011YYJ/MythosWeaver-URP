@@ -1583,7 +1583,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 53df6e7197d9f7a449d165969865df1d, type: 3}
+  m_Sprite: {fileID: 1724730336, guid: dfd2917e2b5886945a8a51e5b750177b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1608,7 +1608,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -1080, z: 0}
 --- !u!95 &941282232
 Animator:
   serializedVersion: 5
@@ -3101,6 +3101,7 @@ GameObject:
   - component: {fileID: 2121532175}
   - component: {fileID: 2121532176}
   - component: {fileID: 2121532177}
+  - component: {fileID: 2121532178}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -3180,13 +3181,14 @@ MonoBehaviour:
   Card: {fileID: 941282229}
   CardAnimator: {fileID: 0}
   CardCurrent: {fileID: 0}
-  cataclysm: {fileID: 21300000, guid: e3c35f12ff4a9c14da2759ab6c1c4ee8, type: 3}
-  creation: {fileID: 21300000, guid: 53df6e7197d9f7a449d165969865df1d, type: 3}
-  herosQuest: {fileID: 21300000, guid: 905e4d21e461f5c4d92d507305236039, type: 3}
-  trickery: {fileID: 21300000, guid: 346248575249742469f1c66959260b09, type: 3}
+  cataclysm: {fileID: 1724730336, guid: dfd2917e2b5886945a8a51e5b750177b, type: 3}
+  creation: {fileID: -1253817770, guid: dfd2917e2b5886945a8a51e5b750177b, type: 3}
+  herosQuest: {fileID: 177726635, guid: dfd2917e2b5886945a8a51e5b750177b, type: 3}
+  trickery: {fileID: -966261458, guid: dfd2917e2b5886945a8a51e5b750177b, type: 3}
   animationDes: {fileID: 0}
   desCCScript: {fileID: 0}
   dialogueSystemDesScript: {fileID: 0}
+  dissolveEffectScript: {fileID: 0}
   fadeDuration: 0.8
   waitBeforeLoad: 1
 --- !u!114 &2121532175
@@ -3254,6 +3256,21 @@ MonoBehaviour:
   isTyping: 0
   desCCScript: {fileID: 0}
   chooseEventssScript: {fileID: 0}
+--- !u!114 &2121532178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121532170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 710ad0822e061e340bf98c5ba43770fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: eb08c617e8c41d94aa4f2293d5ba985a, type: 2}
+  dissolveAmount: 0
+  isDissolving: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
