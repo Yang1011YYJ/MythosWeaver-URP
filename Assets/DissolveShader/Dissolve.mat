@@ -62,7 +62,7 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _DissolveAmount: 1
+    - _DissolveAmount: 0
     - _EnableExternalAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0

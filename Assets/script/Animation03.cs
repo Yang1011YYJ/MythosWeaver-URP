@@ -1,15 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
 using TMPro;
 using UnityEngine;
 using System;
 
-public class AnimationDes : MonoBehaviour
+public class Animation03 : MonoBehaviour
 {
-    private CanvasGroup canvasGroup;
-    private SpriteRenderer spriteRenderer;
-    private TextMeshProUGUI tmpText;
     void Start()
     {
         
@@ -24,9 +19,9 @@ public class AnimationDes : MonoBehaviour
     {
         return new WaitForSeconds(seconds);
     }
-    public void Fade(GameObject gameObject, float start, float end, float duration, Action onComplete)
+    public void Fade(GameObject gameObject, float start,float end,float duration, Action onComplete)
     {
-        StartCoroutine(FadeRoutine(start, end, duration, gameObject, onComplete));
+        StartCoroutine(FadeRoutine(start, end, duration, gameObject,  onComplete));
     }
 
     public IEnumerator FadeRoutine(float start, float end, float duration, GameObject gameObject, Action onComplete)

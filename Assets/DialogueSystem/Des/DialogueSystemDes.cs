@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DialogueSystemDes : MonoBehaviour
@@ -78,8 +79,20 @@ public class DialogueSystemDes : MonoBehaviour
 
     void Update()
     {
+        if (KeepTalk)
+        {
+            KeepTalk = false;
+
+            // 如果你希望「KeepTalk 代表從頭開始播放這個檔案」：
+            index = 0;
+            GetTextFromFile(TextfileCurrent);
+            StartDialogue();
+
+            // 如果你以後想支援「接續 index」，就可以把上面兩行拆開控制
+        }
         if (autoNextLine)
         {
+            // 這裡不要 return，auto 模式只是「不吃空白鍵」而已。
             return;
         }
         else if (Input.GetKeyDown(KeyCode.Space))
@@ -111,6 +124,8 @@ public class DialogueSystemDes : MonoBehaviour
                 }
                 else if(TextfileCurrent == TextfileDescriptionCard)
                 {
+                    string sceneCode = ((int)chooseEventssScript.currentEvent).ToString("00");
+                    SceneManager.LoadScene(sceneCode);
 
                 }
                 else
@@ -130,17 +145,9 @@ public class DialogueSystemDes : MonoBehaviour
 
                 typingRoutine = StartCoroutine(SetTextUI());
             }
-
-            
         }
 
-        if (KeepTalk)
-        {
-            KeepTalk = false;
-            index = 0;
-            GetTextFromFile(TextfileCurrent);
-            StartDialogue();
-        }
+        
     }
 
     void GetTextFromFile(TextAsset file)
@@ -158,7 +165,6 @@ public class DialogueSystemDes : MonoBehaviour
 
     public void StartDialogue()
     {
-        playOnEnable = true;
         if (TextList.Count == 0) return;
 
         // 避免 index 跑出範圍

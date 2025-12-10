@@ -30,16 +30,18 @@ public class DesCC : MonoBehaviour
         inputField.gameObject.SetActive(false);
         pulleventbutton.gameObject.SetActive(false);
         // 把「淡入後要做什麼」包成一個 function 丟進去
-        animationDesScript.FadeOut(
-            2f,
+        animationDesScript.Fade(
             Panel,
-            DialogueSystemDesScript.playOnEnable,
+            0f,
+            1f,
+            2f/*持續時間*/,
             OnFadeFinished
         );
         
     }
     void OnFadeFinished()
     {
+        DialogueSystemDesScript.playOnEnable = true;
         DialogueSystemDesScript.StartDialogue();
         desStart = true;
         DialogueSystemDesScript.autoNextLine = true;
