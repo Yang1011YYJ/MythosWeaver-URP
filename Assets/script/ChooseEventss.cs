@@ -128,6 +128,7 @@ public class ChooseEventss : MonoBehaviour
             desCCScript.PullEvent = 5;
         }
 
+        dialogueSystemDesScript.TextPanel.SetActive(false);
         // 套事件 & 播動畫
         SetEvent(choiceId);
         ShowCardAnimation();
@@ -207,6 +208,15 @@ public class ChooseEventss : MonoBehaviour
 
     private void ShowCardAnimation()
     {
+        if (desCCScript != null)//關掉按鈕和輸入事件編號的UI
+                                //之後接arduino可以拿掉
+        {
+            if (desCCScript.pulleventbutton != null)
+                desCCScript.pulleventbutton.gameObject.SetActive(false);
+
+            if (desCCScript.inputField != null)
+                desCCScript.inputField.gameObject.SetActive(false);
+        }
         if (Card == null) return;
 
         if (!Card.activeSelf)
@@ -226,21 +236,19 @@ public class ChooseEventss : MonoBehaviour
 
         descriptionStarted = true;
 
-        if (desCCScript != null)//關掉按鈕和輸入事件編號的UI
-            //之後接arduino可以拿掉
-        {
-            if (desCCScript.pulleventbutton != null)
-                desCCScript.pulleventbutton.gameObject.SetActive(false);
 
-            if (desCCScript.inputField != null)
-                desCCScript.inputField.gameObject.SetActive(false);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Card.SetActive(false);
+            if (dialogueSystemDesScript != null)
+            {
+                dialogueSystemDesScript.TextPanel.SetActive(true);
+                dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
+                dialogueSystemDesScript.KeepTalk = true;
+            }
         }
 
-        if (dialogueSystemDesScript != null)
-        {
-            dialogueSystemDesScript.TextfileCurrent = dialogueSystemDesScript.TextfileDescriptionCard;
-            dialogueSystemDesScript.KeepTalk = true;
-        }
+        
     }
 
     // ======= 下面這段你原本用事件資料庫＋切場景的邏輯先註解著，就不貼了 =======
