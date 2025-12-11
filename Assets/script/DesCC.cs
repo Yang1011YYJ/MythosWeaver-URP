@@ -32,8 +32,8 @@ public class DesCC : MonoBehaviour
         // 把「淡入後要做什麼」包成一個 function 丟進去
         animationDesScript.Fade(
             Panel,
-            0f,
             1f,
+            0f,
             2f/*持續時間*/,
             OnFadeFinished
         );
@@ -41,6 +41,7 @@ public class DesCC : MonoBehaviour
     }
     void OnFadeFinished()
     {
+        Panel.SetActive(false);
         DialogueSystemDesScript.playOnEnable = true;
         DialogueSystemDesScript.StartDialogue();
         desStart = true;
