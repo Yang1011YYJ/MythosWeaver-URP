@@ -96,7 +96,7 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 1
     - _SrcBlend: 1
-    - _StartTime: 4.0321293
+    - _StartTime: 5.176928
     - _Strength: 1
     - _UVSec: 0
     - _WaveFrequency: 20
@@ -105,7 +105,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 0.29803923, a: 0}
-    - _Center: {r: 0.50202155, g: 0.47683942, b: 0, a: 0}
+    - _Center: {r: 0.463353, g: 0.5068895, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}

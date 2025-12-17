@@ -37,6 +37,8 @@ public class DialogueSystemDes : MonoBehaviour
     public GameObject TextNextHint;
     List<string> TextList = new List<string>();
     [Tooltip("標記是否正在打字")] public bool isTyping = false;
+    [Header("輸入控制")]
+    public bool waitingForContinue = false;
 
     [Header("腳本")]
     public DesCC desCCScript;
@@ -79,75 +81,114 @@ public class DialogueSystemDes : MonoBehaviour
 
     void Update()
     {
+        // 1) 外部要求立刻開始一段新對話
         if (KeepTalk)
         {
             KeepTalk = false;
-
-            // 如果你希望「KeepTalk 代表從頭開始播放這個檔案」：
             index = 0;
             GetTextFromFile(TextfileCurrent);
             StartDialogue();
-
-            // 如果你以後想支援「接續 index」，就可以把上面兩行拆開控制
-        }
-        if (autoNextLine)
-        {
-            // 這裡不要 return，auto 模式只是「不吃空白鍵」而已。
             return;
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        // 2) 只有空白鍵才處理
+        if (!Input.GetKeyDown(KeyCode.Space))
+            return;
+        // 3) 自動播放中：不吃空白鍵（避免被亂按打斷）
+        if (autoNextLine)
+            return;
+        // 4) 正在打字：空白鍵 = 直接顯示完本句（可選功能）
+        if (isTyping)
         {
-            if (isTyping)
-            {
-                CompleteCurrentLine();
-                return;
-            }
+            CompleteCurrentLine();
+            return;
+        }
+        // 5) 只有在「真的等繼續」時，空白鍵才推進流程
+        if (!waitingForContinue)
+            return;
 
-            if (index == TextList.Count)
-            {
-                if(TextfileCurrent == TextfileDes)
-                {
-                    Debug.Log("11");
-                    TextfileCurrent = TextfileHowToPlay;
-                    GetTextFromFile(TextfileCurrent);
-                    index = 0;
-                    autoNextLine = true;
-                    keepHistoryInPrologue = true;
-                    typingRoutine = StartCoroutine(SetTextUI());
-                }
-                else if(TextfileCurrent == TextfileHowToPlay)//等待玩家拉桿
-                {
-                    Debug.Log("111");
-                    chooseEventssScript.EnableLever();
-                    desCCScript.inputField.gameObject.SetActive(true);
-                    desCCScript.pulleventbutton.gameObject.SetActive(true);
-                }
-                else if(TextfileCurrent == TextfileDescriptionCard)
-                {
-                    string sceneCode = ((int)chooseEventssScript.currentEvent).ToString("00");
-                    SceneManager.LoadScene(sceneCode);
+        waitingForContinue = false;
+        if (TextNextHint != null) TextNextHint.SetActive(false);
 
-                }
-                else
-                {
-                    TextPanel.SetActive(false);
-                    TextNextHint.SetActive(false);
-                    index = 0;
-                    return;
-                }
-                
-            }
-            else
+        if (index >= TextList.Count)
+        {
+            if (TextfileCurrent == TextfileDes)
             {
-                // 播下一行
-                if (typingRoutine != null)
-                    StopCoroutine(typingRoutine);
+                Debug.Log("11");
+                TextfileCurrent = TextfileHowToPlay;
+                GetTextFromFile(TextfileCurrent);
+                index = 0;
+
+                autoNextLine = true;
+                keepHistoryInPrologue = true;
 
                 typingRoutine = StartCoroutine(SetTextUI());
             }
-        }
+            else if(TextfileCurrent == TextfileHowToPlay)//等待玩家拉桿
+            {
+                Debug.Log("111");
+                chooseEventssScript.EnableLever();
+                desCCScript.inputField.gameObject.SetActive(true);
+                desCCScript.pulleventbutton.gameObject.SetActive(true);
+            }
+            else if(TextfileCurrent == TextfileDescriptionCard)
+            {
+                // 1. 關掉對話框（如果你希望題目提示是另外一塊 UI）
+                TextPanel.SetActive(false);
+                TextNextHint.SetActive(false);
+                index = 0;
 
-        
+                // 2. 告訴 ChooseEventss：「事件說明講完了，請根據 currentEvent 顯示題目 & 開啟選角色」
+                if (chooseEventssScript != null)
+                {
+                    chooseEventssScript.StartRoleSelectionForCurrentEvent();
+                }
+
+                // 3. 這一段對話已經結束，可以把 index 歸零或依你之後的規劃處理
+                index = 0;
+                return;
+
+            }
+            else
+            {
+                TextPanel.SetActive(false);
+                TextNextHint.SetActive(false);
+                index = 0;
+                return;
+            }
+                
+        }
+        else
+        {
+            // 播下一行
+            if (typingRoutine != null)
+                StopCoroutine(typingRoutine);
+
+            typingRoutine = StartCoroutine(SetTextUI());
+        }
+    }
+
+    public void StartShortLeverHintOnly()
+    {
+        // 先確保對話框會顯示
+        TextPanel.SetActive(true);
+        TextNextHint.SetActive(false);
+
+        // 直接顯示一段短提示（不用走 TextList 也可以）
+        StopAllCoroutines();
+        waitingForContinue = false;
+        autoNextLine = false;
+        isTyping = false;
+
+        TextLabel.text = "請拉桿選擇事件...";
+        TextLabel.maxVisibleCharacters = TextLabel.text.Length;
+
+        // ✅ 直接進入等待拉桿（但不要播 TextfileHowToPlay）
+        if (chooseEventssScript != null && desCCScript != null)
+        {
+            chooseEventssScript.EnableLever();
+            desCCScript.inputField.gameObject.SetActive(true);
+            desCCScript.pulleventbutton.gameObject.SetActive(true);
+        }
     }
 
     void GetTextFromFile(TextAsset file)
@@ -165,6 +206,8 @@ public class DialogueSystemDes : MonoBehaviour
 
     public void StartDialogue()
     {
+        waitingForContinue = false;
+        //if (TextNextHint != null) TextNextHint.SetActive(false);
         if (TextList.Count == 0) return;
 
         // 避免 index 跑出範圍
@@ -227,6 +270,8 @@ public class DialogueSystemDes : MonoBehaviour
     }
     IEnumerator SetTextUI()
     {
+        Debug.Log($"[SetTextUI] start file={TextfileCurrent?.name}, index={index}, count={TextList?.Count}");
+        if (TextLabel == null) Debug.LogError("[SetTextUI] TextLabel is NULL");
         isTyping = true;
 
         // 組出完整文字 + 前面舊文字字數
@@ -280,25 +325,29 @@ public class DialogueSystemDes : MonoBehaviour
         if (autoNextLine)
         {
 
-            // 已經是最後一行了
+            /// 已經是最後一行了
             if (index >= TextList.Count)
             {
-                // 播完全部 → 可以直接關面板或留著
                 autoNextLine = false;
                 typingRoutine = null;
+
+                // ✅ 關鍵：自動播完後，改成等玩家按空白才進下一段
+                waitingForContinue = true;
+                if (TextNextHint != null) TextNextHint.SetActive(true); // 可選：提示 icon
+
                 yield break;
             }
 
-            // 還有下一行 → 等一小段時間再播下一句
             yield return new WaitForSeconds(autoNextDelay);
-
             typingRoutine = StartCoroutine(SetTextUI());
         }
         else
         {
-            // 手動模式：停在這裡，等玩家按空白
+            waitingForContinue = true;
+            if (TextNextHint != null) TextNextHint.SetActive(true);
             typingRoutine = null;
         }
+
     }
 
 

@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 476319225}
   - component: {fileID: 476319224}
   - component: {fileID: 476319227}
+  - component: {fileID: 476319228}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -338,6 +339,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ce96e7034ad5946b88622aeb477fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &476319228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476319223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce087b3bb00657a4d998ef8e23d3e516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaxRounds: 4
 --- !u!1 &1067281342
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,17 +764,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 476319227}
-        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
-        m_MethodName: BackToChooseEvent
-        m_Mode: 1
+      - m_Target: {fileID: 476319228}
+        m_TargetAssemblyTypeName: EventEndController, Assembly-CSharp
+        m_MethodName: OnEventFinishedBool
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &2145331412
 MonoBehaviour:
