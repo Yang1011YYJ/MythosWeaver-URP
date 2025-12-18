@@ -5,6 +5,7 @@ public class GameStartController : MonoBehaviour
 {
     public string drawEventSceneName = "DrawEventScene";
     public GameObject FatherP;
+    public AnimationMenu animationMenuScript;
 
     public void StartNewGame()
     {
@@ -15,6 +16,7 @@ public class GameStartController : MonoBehaviour
         PlayerPrefs.Save();
 
         //SceneManager.LoadScene(drawEventSceneName);
+        animationMenuScript.Fade(FatherP, 2, 1, 0, null);
         FatherP.SetActive(false);
     }
 
@@ -22,6 +24,7 @@ public class GameStartController : MonoBehaviour
     {
         // 續局：直接進抽事件場景，不重置
         //SceneManager.LoadScene(drawEventSceneName);
+        animationMenuScript.Fade(FatherP, 2, 1, 0, null);
         FatherP.SetActive(false);
     }
 }

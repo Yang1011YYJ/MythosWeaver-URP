@@ -537,8 +537,9 @@ GameObject:
   - component: {fileID: 378648502}
   - component: {fileID: 378648504}
   - component: {fileID: 378648503}
+  - component: {fileID: 378648505}
   m_Layer: 5
-  m_Name: p
+  m_Name: GameStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -578,7 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.06666667, g: 0.06666667, b: 0.06666667, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -603,6 +604,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378648501}
   m_CullTransparentMesh: 1
+--- !u!225 &378648505
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378648501}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &466700476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,6 +1314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawEventSceneName: DrawEventScene
   FatherP: {fileID: 378648501}
+  animationMenuScript: {fileID: 0}
 --- !u!1 &1130742718
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,5 +19,36 @@ public class AnimationMenu : MonoBehaviour
     {
         Circleanimator.SetBool("open", true);
         Circle1animator.SetBool("open",true);
+    }
+
+    public void Fade(GameObject panel, float duration, float from, float to, Action onComplete)
+    {
+        StartCoroutine(FadeRoutine(panel,duration,from,to,onComplete));
+    }
+
+    public IEnumerator FadeRoutine(GameObject panel,float duration,float from,float to,Action onComplete)
+    {
+        if (panel == null) yield break;
+
+        panel.SetActive(true);
+
+        CanvasGroup cg = panel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = panel.AddComponent<CanvasGroup>();
+
+        cg.alpha = from;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
+            cg.alpha = Mathf.Lerp(from, to, t);
+            yield return null;
+        }
+
+        cg.alpha = to;
+
+        onComplete?.Invoke();
     }
 }
